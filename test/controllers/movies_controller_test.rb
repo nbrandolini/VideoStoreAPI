@@ -25,7 +25,7 @@ describe MoviesController do
     end
 
     it "returns movies with exactly the fields required" do
-      keys = %w(id title release_date)
+      keys = %w(id title release_date overview inventory )
       get movies_path
       body = JSON.parse(response.body)
       body.each do |movie|
@@ -95,24 +95,22 @@ describe MoviesController do
       body["errors"].must_include "inventory"
     end
   end
-  # it "should get show" do
-  #   get movies_show_url
-  #   value(response).must_be :success?
-  # end
-  #
-  # it "should get update" do
-  #   get movies_update_url
-  #   value(response).must_be :success?
-  # end
-  #
-  # it "should get create" do
-  #   get movies_create_url
-  #   value(response).must_be :success?
-  # end
-  #
-  # it "should get destroy" do
-  #   get movies_destroy_url
-  #   value(response).must_be :success?
-  # end
+
+  describe "show" do
+    # This bit is up to you!
+    it "can get a movie" do
+      get movie_path(movies(:two).id)
+      must_respond_with :success
+    end
+
+    it "returns a 404 for movies that are not found" do
+      #Arrange
+      movie = movies(:two)
+      movie.destroy
+      get movie_path(movie.id)
+      #Assert
+      must_respond_with :not_found
+    end
+  end
 
 end
