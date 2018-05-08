@@ -8,7 +8,9 @@
 json_customers = JSON.parse(File.read('db/seeds/customers.json'))
 
 json_customers.each do |customer|
-  Customer.create!(customer)
+  new = Customer.create!(customer)
+  new.movies_checked_out_count = 0
+  new.save
 end
 
 json_movies = JSON.parse(File.read('db/seeds/movies.json'))
