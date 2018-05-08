@@ -12,7 +12,8 @@ class MoviesController < ApplicationController
         title: movie.title,
         overview: movie.overview,
         release_date: movie.release_date,
-        inventory: movie.inventory
+        inventory: movie.inventory,
+        available_inventory: movie.available_inventory,
       }
       render json: show_movie_hash.as_json, status: :ok
     else
