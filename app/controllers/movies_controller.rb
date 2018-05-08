@@ -3,7 +3,7 @@ class MoviesController < ApplicationController
 
   def index
     movies = Movie.all
-    render :json => movies.as_json(only: [:id, :title, :release_date, :overview, :inventory]), status: :ok
+    render :json => movies.as_json(only: [:id, :title, :release_date, :overview, :inventory, :availa]), status: :ok
   end
 
   def show
@@ -45,7 +45,7 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
-    params.require(:movie).permit(:title, :overview, :release_date, :inventory)
+    params.permit(:title, :overview, :release_date, :inventory, :available_inventory)
   end
 
 end

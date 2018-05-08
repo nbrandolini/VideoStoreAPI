@@ -47,7 +47,7 @@ describe MoviesController do
 
     it "Creates a new movie" do
       proc {
-        post movies_path, params: {movie: movie_data}
+        post movies_path, params: movie_data
       }.must_change 'Movie.count', 1
 
       must_respond_with :success
@@ -57,7 +57,7 @@ describe MoviesController do
       movie_data.delete(:title)
 
       proc {
-        post movies_path, params: {movie: movie_data}
+        post movies_path, params: movie_data
       }.must_change 'Movie.count', 0
 
       must_respond_with :bad_request
@@ -71,7 +71,7 @@ describe MoviesController do
       movie_data.delete(:release_date)
 
       proc {
-        post movies_path, params: {movie: movie_data}
+        post movies_path, params: movie_data
       }.must_change 'Movie.count', 0
 
       must_respond_with :bad_request
@@ -85,7 +85,7 @@ describe MoviesController do
       movie_data.delete(:inventory)
 
       proc {
-        post movies_path, params: {movie: movie_data}
+        post movies_path, params: movie_data
       }.must_change 'Movie.count', 0
 
       must_respond_with :bad_request
