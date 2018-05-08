@@ -34,7 +34,67 @@ describe MoviesController do
     end
   end
 
+  describe "create" do
+    let(:movie_data) {
+      {
+        title: "Code Girl",
+        release_date: "2000-1-10",
+        overview: "Stellar",
+        inventory: 11,
+        available_inventory: 11
+      }
+    }
 
+    it "Creates a new movie" do
+      proc {
+        post movies_path, params: {movie: movie_data}
+      }.must_change 'Movie.count', 1
+
+      must_respond_with :success
+    end
+
+    it "Won't create a movie without title" do
+      movie_data.delete(:title)
+
+      proc {
+        post movies_path, params: {movie: movie_data}
+      }.must_change 'Movie.count', 0
+
+      must_respond_with :bad_request
+      body = JSON.parse(response.body)
+      body.must_be_kind_of Hash
+      body.must_include "errors"
+      body["errors"].must_include "title"
+    end
+
+    it "Won't create a movie without release date" do
+      movie_data.delete(:release_date)
+
+      proc {
+        post movies_path, params: {movie: movie_data}
+      }.must_change 'Movie.count', 0
+
+      must_respond_with :bad_request
+      body = JSON.parse(response.body)
+      body.must_be_kind_of Hash
+      body.must_include "errors"
+      body["errors"].must_include "release_date"
+    end
+
+    it "Won't create a movie without inventory" do
+      movie_data.delete(:inventory)
+
+      proc {
+        post movies_path, params: {movie: movie_data}
+      }.must_change 'Movie.count', 0
+
+      must_respond_with :bad_request
+      body = JSON.parse(response.body)
+      body.must_be_kind_of Hash
+      body.must_include "errors"
+      body["errors"].must_include "inventory"
+    end
+  end
   # it "should get show" do
   #   get movies_show_url
   #   value(response).must_be :success?

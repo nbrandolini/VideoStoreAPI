@@ -1,4 +1,6 @@
 class MoviesController < ApplicationController
+  # protect_from_forgery with: :null_session
+
   def index
     movies = Movie.all
     render :json => movies.as_json(only: [:id, :title, :release_date, :overview, :inventory]), status: :ok
@@ -43,7 +45,7 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
-    params.permit(:title, :overview, :release_date, :inventory)
+    params.require(:movie).permit(:title, :overview, :release_date, :inventory)
   end
 
 end
