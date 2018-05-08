@@ -8,7 +8,6 @@ class MoviesController < ApplicationController
 
   def show
     movie = Movie.find_by(id: params[:id])
-
     if movie
       show_movie_hash = {
         title: movie.title,
@@ -19,14 +18,9 @@ class MoviesController < ApplicationController
       }
       render json: show_movie_hash.as_json, status: :ok
     else
-      render json: { ok: false }, status: :not_found
+      render json: { ok: false, errors: {title: ["Movie not found"]} }, status: :not_found
     end
   end
-
-
-
-  # def update
-  # end
 
   def create
     movie = Movie.create(movie_params)
@@ -37,11 +31,7 @@ class MoviesController < ApplicationController
       render json: {ok: false, errors: movie.errors}, status: :bad_request
     end
   end
-
-  # def destroy
-  # end
-
-
+    
   private
 
   def movie_params
