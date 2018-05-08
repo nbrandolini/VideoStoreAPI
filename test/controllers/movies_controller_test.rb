@@ -37,7 +37,7 @@ describe MoviesController do
   describe "show" do
     # This bit is up to you!
     it "can get a movie" do
-      get movie_path(movies(:two).id)
+      get movie_path
       must_respond_with :success
     end
 
