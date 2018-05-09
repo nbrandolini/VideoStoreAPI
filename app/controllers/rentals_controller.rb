@@ -34,7 +34,7 @@ class RentalsController < ApplicationController
       else
         render json: {
           errors: ["No copies are currently available"]
-        }, status: :bad_request
+        }, status: :ok
         return
       end
 

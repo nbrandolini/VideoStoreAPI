@@ -7,6 +7,7 @@ class Movie < ApplicationRecord
   validates :available_inventory, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   def update_checkout
+
     self.available_inventory -= 1
     self.save
   end
