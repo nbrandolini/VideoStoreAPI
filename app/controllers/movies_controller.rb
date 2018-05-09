@@ -18,7 +18,7 @@ class MoviesController < ApplicationController
       }
       render json: show_movie_hash.as_json, status: :ok
     else
-      render json: { ok: false, errors: {title: ["Movie not found"]} }, status: :not_found
+      render json: { ok: false, errors: {id: ["Movie not found"]} }, status: :not_found
     end
   end
 
@@ -31,7 +31,7 @@ class MoviesController < ApplicationController
       render json: {ok: false, errors: movie.errors}, status: :bad_request
     end
   end
-    
+
   private
 
   def movie_params

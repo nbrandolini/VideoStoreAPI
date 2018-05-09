@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'rentals/check_in'
+
+  get 'rentals/check_out'
+
   resources :customers, only: [:index]
 
   resources :movies, only: [:index, :show, :create]
