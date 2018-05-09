@@ -5,8 +5,12 @@ class Movie < ApplicationRecord
   validates :release_date, presence: true
   validates :inventory, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-  def update_available
+  def update_checkout
     self.available_inventory -= 1
     self.save
+  end
+
+  def update_checkin
+    self.available_inventory +=1
   end
 end
