@@ -21,16 +21,26 @@ class RentalsController < ApplicationController
 
 
   def check_out
-    rental = Rental.create(rental_params)
-    rental.checkout_date = Date.today
-    rental.due_date = rental.checkout_date + RENTAL_PERIOD
-    rental.save
-
-    movie = Movie.find_by(id: rental.movie_id)
+    movie = Movie.find_by(id: rental_params[:movie_id])
+    rental = Rental.new(rental_params)
 
     if movie
-      movie.update_checkout
+      if movie.available_inventory > 0
+        movie.update_checkout
+
+        rental.checkout_date = Date.today
+        rental.due_date = rental.checkout_date + RENTAL_PERIOD
+        rental.save
+      else
+        render json: {
+          errors: ["No copies are currently available"]
+        }, status: :bad_request
+        return
+      end
+
     end
+
+
 
     if rental.valid?
       render json: {due_date: rental.due_date}, status: :ok
