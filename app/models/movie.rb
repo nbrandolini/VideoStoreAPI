@@ -11,6 +11,7 @@ class Movie < ApplicationRecord
   end
 
   def update_checkin
-    self.available_inventory +=1
+    self.available_inventory += 1
+    self.save
   end
 end
