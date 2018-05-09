@@ -1,13 +1,13 @@
 require "test_helper"
 
 describe RentalsController do
-  it "should get check_in" do
-    get rentals_check_in_url
+  it "should get check-in" do
+    post check_in_path
     value(response).must_be :success?
   end
 
-  it "should get check_out" do
-    get rentals_check_out_url
+  it "should get check-out" do
+    get check-out_path
     value(response).must_be :success?
   end
 
@@ -50,19 +50,24 @@ describe RentalsController do
     end
 
     it "doesn't create rental if available inventory is zero" do
-      movie = Movie.find_by(id: rental_data[:movie_id])
-      movie.available_inventory = 0
-      movie.save
+      movie = movies(:rocket)
+      customer = customers(:ada)
+
+      not_available_data = { customer_id: customer.id,
+        movie_id: movie.id,
+        checkout_date: Date.today,
+        due_date: Date.today + 7
+      }
 
       proc {
-        post check_out_path, params: rental_data
+        post check_out_path, params: not_available_data
       }.must_change 'Rental.count', 0
 
       must_respond_with :bad_request
       body = JSON.parse(response.body)
       body.must_be_kind_of Hash
       body.must_include "errors"
-      body["errors"].must_include "None available"
+      body["errors"].must_include "No copies are currently available"
     end
 
     it "doesn't create rental if movie doesn't exist" do
