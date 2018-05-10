@@ -1,15 +1,6 @@
 require "test_helper"
 
 describe RentalsController do
-  it "should get check-in" do
-    post check_in_path
-    value(response).must_be :success?
-  end
-
-  it "should get check-out" do
-    get check-out_path
-    value(response).must_be :success?
-  end
 
   describe "check out" do
 
@@ -63,7 +54,6 @@ describe RentalsController do
         post check_out_path, params: not_available_data
       }.must_change 'Rental.count', 0
 
-      must_respond_with :bad_request
       body = JSON.parse(response.body)
       body.must_be_kind_of Hash
       body.must_include "errors"
@@ -71,8 +61,7 @@ describe RentalsController do
     end
 
     it "doesn't create rental if movie doesn't exist" do
-      movie = Movie.find_by(id: "abc")
-      rental_data[:movie_id] = movie.id
+      rental_data[:movie_id] = "abc"
 
       proc {
         post check_out_path, params: rental_data
@@ -82,7 +71,7 @@ describe RentalsController do
       body = JSON.parse(response.body)
       body.must_be_kind_of Hash
       body.must_include "errors"
-      body["errors"].must_include "None available"
+      body["errors"]["movie"].must_equal ["must exist"]
     end
   end
 end
