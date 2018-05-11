@@ -16,7 +16,7 @@ end
 json_movies = JSON.parse(File.read('db/seeds/movies.json'))
 
 json_movies.each do |movie|
-  new = Movie.create!(movie)
+  new = Movie.new(movie)
   new.available_inventory = new.inventory
   new.save
 end

@@ -7,8 +7,12 @@ class RentalsController < ApplicationController
   def check_in
     rental = Rental.find_by(movie_id:rental_params["movie_id"], customer_id: rental_params["customer_id"])
     movie = Movie.find_by(id: rental.movie_id)
+    customer = Customer.find_by(id: rental_params[:custmer_id])
     if movie
       movie.update_checkin
+      if customer
+        customer.update_count("out")
+      end
     end
 
     if rental.delete
@@ -31,6 +35,18 @@ class RentalsController < ApplicationController
         rental.checkout_date = Date.today
         rental.due_date = rental.checkout_date + RENTAL_PERIOD
         rental.save
+
+        customer = Customer.find_by(id: rental_params[:custmer_id])
+
+        if customer
+          customer.update_count("out")
+        else
+          render json: {
+            errors: ["Customer not found"]
+          }, status: :bad_request
+          return
+        end
+
       else
         render json: {
           errors: ["No copies are currently available"]
@@ -39,7 +55,6 @@ class RentalsController < ApplicationController
       end
 
     end
-
 
 
     if rental.valid?

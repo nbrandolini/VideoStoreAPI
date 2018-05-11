@@ -73,5 +73,7 @@ describe RentalsController do
       body.must_include "errors"
       body["errors"]["movie"].must_equal ["must exist"]
     end
+
+    
   end
 end
