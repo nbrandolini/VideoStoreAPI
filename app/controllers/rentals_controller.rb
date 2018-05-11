@@ -37,7 +37,6 @@ class RentalsController < ApplicationController
 
         movie.update_checkout
 
-
         rental.checkout_date = Date.today
         rental.due_date = rental.checkout_date + RENTAL_PERIOD
         rental.save

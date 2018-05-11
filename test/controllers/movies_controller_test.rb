@@ -99,13 +99,13 @@ describe MoviesController do
   describe "show" do
     # This bit is up to you!
     it "can get a movie" do
-      get movie_path
+      get movie_path(Movie.first.id)
       must_respond_with :success
     end
 
     it "returns a 404 for movies that are not found" do
       #Arrange
-      movie = movies(:two)
+      movie = movies(:bride)
       movie.destroy
       get movie_path(movie.id)
       #Assert

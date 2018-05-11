@@ -4,7 +4,7 @@ describe Movie do
   let(:movie) { Movie.new(title: "Dogtoth", overview: "Weird and good", release_date: "1979-01-18", inventory: 1)}
 
   it "must be valid" do
-    value(movie).must_be :valid?
+    value(movies(:bride)).must_be :valid?
   end
 
   it "must not create without title" do

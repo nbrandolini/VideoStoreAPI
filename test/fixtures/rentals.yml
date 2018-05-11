@@ -3,11 +3,8 @@
 one:
   movie_id: 1
   customer_id: 1
-  checkout_date: 2018-05-08
-  due_date: 2018-05-08
+
 
 two:
   movie_id: 1
   customer_id: 1
-  checkout_date: 2018-05-08
-  due_date: 2018-05-08
