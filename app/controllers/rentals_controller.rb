@@ -9,18 +9,26 @@ class RentalsController < ApplicationController
     customer = Customer.find_by(id: rental_params[:customer_id])
 
     if movie
-      rental = Rental.find_by(movie_id: movie.id, customer_id: customer.id)
-
-      movie.update_checkin
       if customer
+        rental = Rental.find_by(movie_id: movie.id, customer_id: customer.id)
+
+        movie.update_checkin
+
         customer.update_count("in")
+      else
+        render json: {ok: false, errors: "Customer not found"}, status: :bad_request
+        return
       end
+    else
+      render json: {ok: false, errors: "Movie not found"}, status: :bad_request
+      return
     end
 
-    if rental.delete
+    if rental
+      rental.delete
       render json: { id: movie.id }, status: :ok
     else
-      render json: {ok: false, errors: rental.errors}, status: :bad_request
+      render json: {ok: false, errors: "Rental could not be found"}, status: :bad_request
     end
   end
 
