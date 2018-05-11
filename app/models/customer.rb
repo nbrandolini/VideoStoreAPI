@@ -10,5 +10,7 @@ class Customer < ApplicationRecord
     elsif params == "out"
       self.movies_checked_out_count += 1
     end
+
+    self.save
   end
 end

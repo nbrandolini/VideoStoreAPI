@@ -40,11 +40,6 @@ class RentalsController < ApplicationController
 
         if customer
           customer.update_count("out")
-        else
-          render json: {
-            errors: ["Customer not found"]
-          }, status: :bad_request
-          return
         end
 
       else
