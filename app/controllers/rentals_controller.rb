@@ -41,7 +41,6 @@ class RentalsController < ApplicationController
     end
 
 
-
     if rental.valid?
       render json: {due_date: rental.due_date}, status: :ok
     else
