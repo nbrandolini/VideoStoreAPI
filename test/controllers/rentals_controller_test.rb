@@ -6,9 +6,7 @@ describe RentalsController do
 
       let(:rental_data) {
         { customer_id: 1,
-          movie_id: 1,
-          checkout_date: Date.today,
-          due_date: Date.today + 7
+          movie_id: 1
         }
       }
 
@@ -74,6 +72,42 @@ describe RentalsController do
       body["errors"]["movie"].must_equal ["must exist"]
     end
 
-    
+    it "updates customer movies_checked_out_count" do
+      movie = movies(:bride)
+      customer = customers(:ada)
+      count = customer.movies_checked_out_count
+
+      post check_out_path, params: {movie_id: movie.id, customer_id: customer.id }
+
+      customer = Customer.find(customer.id)
+
+      customer.movies_checked_out_count.must_equal count + 1
+    end
+
+  end
+
+
+  describe "check in" do
+
+    let(:rental_data) {
+      { customer_id: 1,
+        movie_id: 1
+      }
+    }
+
+    it "updates customer movies_checked_out_count" do
+      movie = movies(:bride)
+      customer = customers(:ada)
+
+      post check_out_path, params: { customer_id: customer.id, movie_id: movie.id }
+      customer = Customer.find(customer.id)
+      count = customer.movies_checked_out_count
+
+      post check_in_path, params: {movie_id: movie.id, customer_id: customer.id }
+
+      customer = Customer.find(customer.id)
+
+      customer.movies_checked_out_count.must_equal count - 1
+    end
   end
 end

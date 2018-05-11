@@ -28,6 +28,7 @@ describe Customer do
 
       customer.update_count("in")
       customer.movies_checked_out_count.must_equal count - 1
+
     end
 
 

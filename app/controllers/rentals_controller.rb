@@ -5,13 +5,15 @@ class RentalsController < ApplicationController
   RENTAL_PERIOD = 7
 
   def check_in
-    rental = Rental.find_by(movie_id:rental_params["movie_id"], customer_id: rental_params["customer_id"])
-    movie = Movie.find_by(id: rental.movie_id)
-    customer = Customer.find_by(id: rental_params[:custmer_id])
+    movie = Movie.find_by(id: rental_params[:movie_id])
+    customer = Customer.find_by(id: rental_params[:customer_id])
+
     if movie
+      rental = Rental.find_by(movie_id: movie.id, customer_id: customer.id)
+
       movie.update_checkin
       if customer
-        customer.update_count("out")
+        customer.update_count("in")
       end
     end
 
@@ -25,18 +27,22 @@ class RentalsController < ApplicationController
 
 
   def check_out
+
     movie = Movie.find_by(id: rental_params[:movie_id])
     rental = Rental.new(rental_params)
 
     if movie
+
       if movie.available_inventory > 0
+
         movie.update_checkout
+
 
         rental.checkout_date = Date.today
         rental.due_date = rental.checkout_date + RENTAL_PERIOD
         rental.save
 
-        customer = Customer.find_by(id: rental_params[:custmer_id])
+        customer = Customer.find_by(id: rental_params[:customer_id])
 
         if customer
           customer.update_count("out")

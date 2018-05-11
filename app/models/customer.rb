@@ -4,6 +4,13 @@ class Customer < ApplicationRecord
   validates :name, presence: :true, format: { with: /\A[a-zA-Z]+(?: [a-zA-Z]+)?\z/,
     message: "Only allows letters" }
 
+  def update_checkout
+    self.movies_checked_out_count += 1
+    self.save
+  end
+
+
+
   def update_count(params)
     if params == "in"
       self.movies_checked_out_count -= 1
